@@ -39,8 +39,10 @@ export const register = (req, res) => {
             var hash = CryptoJS.AES.encrypt(userInfo.password, process.env.CRYPTO_KEY);
 
             try {
-                const q = "INSERT INTO users(`username`,`email`,`password`) VALUES (?)";
-                const values = [userInfo.username, userInfo.email, hash];
+                const q = `INSERT INTO users(username, email, password,
+                     first_name, last_name) VALUES (?)`;
+                const values = [userInfo.username, userInfo.email, hash,
+                     userInfo.first_name, userInfo.last_name];
             
                 db.query(q, [values], (err, data) => {
                   if (err) return res.status(500).json(err);
