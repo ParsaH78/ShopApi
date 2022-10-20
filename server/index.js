@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Connected on Port ${process.env.PORT}`);
