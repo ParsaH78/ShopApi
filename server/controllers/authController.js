@@ -24,7 +24,13 @@ const regexValidator = (data) => {
 export const register = (req, res) => {
     const userInfo = req.body;
 
-    let regex = regexValidator(userInfo);
+    const regexData = {
+        username: userInfo.username,
+        email: userInfo.email,
+        password: userInfo.password
+    };
+
+    let regex = regexValidator(regexData);
 
     if (!regex) {
       return res.status(404).json({ message: "اطلاعات معتبر نیستند" });
