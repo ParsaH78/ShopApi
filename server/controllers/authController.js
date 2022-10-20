@@ -36,32 +36,25 @@ export const register = (req, res) => {
       return res.status(404).json({ message: "اطلاعات معتبر نیستند" });
     }
 
-    try {
-        db.query(q, [userInfo.email, userInfo.username], (err, data) => {
-            if (err) return res.status(500).json(err);
-            if (data.length) return res.status(409).json("User already exists!");
-        
-            //Hash the password and create a user
-            var hash = CryptoJS.AES.encrypt(userInfo.password, process.env.CRYPTO_KEY);
+    const q = "SELECT * FROM users WHERE email = ? OR username = ?";
 
-            try {
-                const q = `INSERT INTO users(username, email, password,
-                     first_name, last_name) VALUES (?)`;
-                const values = [userInfo.username, userInfo.email, hash,
-                     userInfo.first_name, userInfo.last_name];
-            
-                db.query(q, [values], (err, data) => {
-                  if (err) return res.status(500).json(err);
-                  return res.status(200).json("User has been created.");
-                });
-            } catch (error) {
-                return res.status(404).json({message: "خطا در ثبت نام (ثبت کاربر در پایگاه داده)"})
-            }
+    db.query(q, [userInfo.email, userInfo.username], (err, data) => {
+        if (err) return res.status(500).json(err);
+        if (data.length) return res.status(409).json("User already exists!");
+    
+        //Hash the password and create a user
+        var hash = CryptoJS.AES.encrypt(userInfo.password, process.env.CRYPTO_KEY).toString();
 
-          });
-    } catch (error) {
-        return res.status(404).json({message: "خطا در ثبت نام (یافتن کاربر در پایگاه داده)"})
-    }
+        const q = `INSERT INTO users(username, email, password, first_name, last_name) VALUES (?)`;
+        const values = [userInfo.username, userInfo.email, hash,
+              userInfo.first_name, userInfo.last_name];
+    
+        db.query(q, [values], (err, data) => {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json("User has been created.");
+        });
+
+    });
 }
 
 export const login = (req, res) => {
@@ -72,22 +65,24 @@ export const login = (req, res) => {
     if (data.length === 0) return res.status(404).json("User not found!");
 
     //Check password
-    var decrypted = CryptoJS.AES.decrypt(data[0].password, process.env.CRYPTO_KEY);
+    const decrypted = CryptoJS.AES.decrypt(data[0].password, process.env.CRYPTO_KEY);
 
-    if (req.body.password !== decrypted)
+    const pass = decrypted.toString(CryptoJS.enc.Utf8);
+
+    if (req.body.password !== pass)
       return res.status(400).json("Wrong username or password!");
 
     const token = jwt.sign({ id: data[0].id }, process.env.JWT_KEY, {
         expiresIn: '7d'
     });
-    const { password, isAdmin, ...other } = data[0];
+    const { password, isAdmin, created_at, updated_at, ...other } = data[0];
 
     res
       .cookie("access_token", token, {
         httpOnly: true,
       })
       .status(200)
-      .json(other);
+      .json({...other, token});
   });
 }
 
