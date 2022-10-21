@@ -1,8 +1,9 @@
 import express from "express";
-import { cerateProduct } from "../controllers/productController.js";
+import { createProduct, updatedProduct } from "../controllers/productController.js";
 
 const router = express.Router();
 
-router.post('/', cerateProduct);
+router.post('/', createProduct);
+router.put('/', updatedProduct);
 
 export default router;
