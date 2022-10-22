@@ -60,4 +60,24 @@ export const getPost = (req, res) => {
         if (error) return res.status(500).json(error);
         return res.status(200).json(data);
     })
-}
+};
+
+export const getAllPosts = (req, res) => {
+    const all = req.query.all;
+    let categories = req.query.categories;
+
+    categories = '%' + categories + '%';
+
+    let query;
+
+    if (all) {
+        query = "SELECT * FROM products ;";
+    } else if (categories) {
+        query = "SELECT * FROM products WHERE categories LIKE ? ;";
+    }
+
+    db.query(query, [categories], (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json(data);
+    })
+};
