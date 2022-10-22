@@ -43,7 +43,7 @@ export const updatedProduct = (req, res) => {
 export const deleteProduct = (req, res) => {
     const id = req.body.id;
 
-    const query = "DELETE FROM products WHERE id = (?)";
+    const query = "DELETE FROM products WHERE id = (?) ;";
 
     db.query(query, [id], (error, data) => {
         if (error) return res.status(500).json(error);
@@ -51,3 +51,13 @@ export const deleteProduct = (req, res) => {
     })
 };
 
+export const getPost = (req, res) => {
+    const id = req.params.id;
+
+    const query = "SELECT * FROM products WHERE id = (?) ;";
+
+    db.query(query, [id], (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json(data);
+    })
+}
