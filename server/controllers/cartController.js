@@ -13,11 +13,23 @@ export const createCart = (req, res) => {
         if (error) return res.status(500).json(error);
     });
 
-    query = `UPDATE products SET print_length = products.print_length - ? WHERE id = ? ;`;
+    // query = `UPDATE products SET print_length = products.print_length - ? WHERE id = ? ;`;
 
-    db.query(query, [cartInfo.product_quantity, cartInfo.product_id],
-         (error, data) => {
-        if (error) return res.status(500).json(error);
-        return res.status(200).json("Cart has been Created AND Product quantity has been Updated.");
-    });
+    // db.query(query, [cartInfo.product_quantity, cartInfo.product_id],
+    //      (error, data) => {
+    //     if (error) return res.status(500).json(error);
+    //     return res.status(200).json("Cart has been Created AND Product quantity has been Updated.");
+    // });
 };
+
+export const updateCart = (req, res) => {
+
+    let query = `UPDATE carts SET product_quantity = ? WHERE id = ? ;`;
+
+    db.query(query, [req.body.quantity, req.body.id], (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json("Cart has been Updated.");
+    })
+
+};
+

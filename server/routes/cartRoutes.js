@@ -1,8 +1,9 @@
 import express from "express";
-import { createCart } from "../controllers/cartController.js";
+import { createCart, updateCart } from "../controllers/cartController.js";
 
 const router = express.Router();
 
 router.post('/', createCart);
+router.put('/', updateCart);
 
 export default router;
