@@ -41,4 +41,14 @@ export const deleteCart = (req, res) => {
         if (error) return res.status(500).json(error);
         return res.status(200).json("Cart has been Deleted.");
     })
-}
+};
+
+export const getUserCart = (req, res) => {
+
+    let query = `SELECT * FROM carts WHERE user_id = ?`;
+
+    db.query(query, [req.params.id], (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json(data);
+    })
+};
