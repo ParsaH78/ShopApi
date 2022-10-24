@@ -33,3 +33,12 @@ export const updateCart = (req, res) => {
 
 };
 
+export const deleteCart = (req, res) => {
+
+    let query = `DELETE FROM carts WHERE id = ?`;
+
+    db.query(query, [req.body.id], (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json("Cart has been Deleted.");
+    })
+}
