@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 import { db } from "../database.js";
 
 
-const protect = async (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token
 
   if (
@@ -35,5 +35,3 @@ const protect = async (req, res, next) => {
     return res.status(401).json({message: 'Not authorized, no token'});
   }
 };
-
-module.exports = { protect };
