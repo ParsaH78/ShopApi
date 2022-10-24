@@ -14,13 +14,6 @@ export const createCart = (req, res) => {
         return res.status(200).json("Cart has been Created");
     });
 
-    // query = `UPDATE products SET print_length = products.print_length - ? WHERE id = ? ;`;
-
-    // db.query(query, [cartInfo.product_quantity, cartInfo.product_id],
-    //      (error, data) => {
-    //     if (error) return res.status(500).json(error);
-    //     return res.status(200).json("Cart has been Created AND Product quantity has been Updated.");
-    // });
 };
 
 export const updateCart = (req, res) => {
