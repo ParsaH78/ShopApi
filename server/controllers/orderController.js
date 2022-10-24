@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 export const createOrder = (req, res) => {
     const orderInfo = req.body;
 
-    orderInfo.Order_id = uuid();
+    orderInfo.order_id = uuid();
 
 
     let query = `INSERT INTO orders (user_id, product_id, product_quantity, Order_id) VALUES (?) ;`;
