@@ -52,3 +52,13 @@ export const getUserCart = (req, res) => {
         return res.status(200).json(data);
     })
 };
+
+export const getSingleCart = (req, res) => {
+
+    let query = `SELECT * FROM carts WHERE cart_id = ?`;
+
+    db.query(query, [req.params.id], (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json(data);
+    })
+};
