@@ -62,3 +62,13 @@ export const getSingleCart = (req, res) => {
         return res.status(200).json(data);
     })
 };
+
+export const getAllCart = (req, res) => {
+
+    let query = `SELECT * FROM carts`;
+
+    db.query(query, (error, data) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json(data);
+    })
+};
