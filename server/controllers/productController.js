@@ -5,7 +5,7 @@ export const createProduct = (req, res) => {
 
     const query = `INSERT INTO products (title, description, categories, image,
          price, print_length, language, publisher,
-          publication_date, dimentions, binding) VALUES (?);`;
+          publication_date, dimensions, binding) VALUES (?);`;
 
     db.query(query, [Object.values(productInfo)], (error, data) => {
         if (error) return res.status(500).json(error);
