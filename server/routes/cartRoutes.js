@@ -1,15 +1,15 @@
 import express from "express";
 import { createCart, updateCart, deleteCart, getUserCart, getSingleCart, getAllCart } from "../controllers/cartController.js";
-import {protect} from "../middlewares/authMiddleware.js"
+import {verifyTokenAndAuthorization} from "../middlewares/authMiddleware.js"
 
 const router = express.Router();
 
-router.post('/', protect, createCart);
-router.put('/', protect, updateCart);
-router.delete('/', protect, deleteCart);
-router.post('/user/:id', protect, getUserCart);
-router.post('/single/:id', protect, getSingleCart);
-router.post('/all', protect, getAllCart);
+router.post('/', verifyTokenAndAuthorization, createCart);
+router.put('/', verifyTokenAndAuthorization, updateCart);
+router.delete('/', verifyTokenAndAuthorization, deleteCart);
+router.post('/user/:id', verifyTokenAndAuthorization, getUserCart);
+router.post('/single/:id', verifyTokenAndAuthorization, getSingleCart);
+router.post('/all', verifyTokenAndAuthorization, getAllCart);
 
 
 export default router;

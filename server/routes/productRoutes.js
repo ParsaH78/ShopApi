@@ -1,13 +1,13 @@
 import express from "express";
 import { createProduct, updatedProduct, deleteProduct, getPost, getAllPosts } from "../controllers/productController.js";
-import {protect} from "../middlewares/authMiddleware.js"
+import {verifyTokenAndAuthorization} from "../middlewares/authMiddleware.js"
 
 const router = express.Router();
 
-router.post('/', protect, createProduct);
-router.put('/', protect, updatedProduct);
-router.delete('/', protect, deleteProduct);
-router.get('/find/:id', protect, getPost);
-router.get('/all', protect, getAllPosts);
+router.post('/', verifyTokenAndAuthorization, createProduct);
+router.put('/', verifyTokenAndAuthorization, updatedProduct);
+router.delete('/', verifyTokenAndAuthorization, deleteProduct);
+router.get('/find/:id', verifyTokenAndAuthorization, getPost);
+router.get('/all', verifyTokenAndAuthorization, getAllPosts);
 
 export default router;
