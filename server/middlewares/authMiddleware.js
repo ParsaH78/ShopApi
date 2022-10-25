@@ -16,14 +16,7 @@ export const protect = async (req, res, next) => {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      let query = `SELECT first_name, last_name, email, username,
-       address, postal_code, phone_number, city,
-        image FROM users WHERE id = ?`;
-
-      db.query(query, [decoded.id], (error, data) => {
-        if (error) return res.status(500).json(error);
-        req.user = data;
-      })
+      req.user = decoded.id;
 
       next()
     } catch (error) {
