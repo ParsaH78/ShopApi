@@ -4,14 +4,22 @@ import { v4 as uuid } from "uuid";
 export const createOrder = (req, res) => {
     const orderInfo = req.body;
 
-    orderInfo.order_id = uuid();
+    if (!orderInfo.order_id) {
+        orderInfo.order_id = uuid();
+    }
 
+    let query = `SELECT * FROM carts WHERE cart_id = ? ;`;
 
-    let query = `INSERT INTO orders (user_id, product_id, product_quantity, Order_id) VALUES (?) ;`;
+    db.query(query, [orderInfo.cart_id], (error, data) => {
+        if (error) return res.status(500).json(error);
+        if (orderInfo.product_quantity > data[0].product_quantity) return res.status(500).json({message: "Quantity !"});
+    });
+
+    query = `INSERT INTO orders (user_id, product_id, product_quantity,
+         price, address, status, order_id) VALUES (?) ;`;
 
     db.query(query, [Object.values(orderInfo)], (error, data) => {
         if (error) return res.status(500).json(error);
-        return res.status(200).json("Order has been Created");
     });
 
     query = `UPDATE products SET print_length = products.print_length - ? WHERE id = ? ;`;
